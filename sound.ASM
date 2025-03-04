@@ -1,4 +1,4 @@
-OutStr macro str ;ìàêðîñ âûâîäà ñòðîêè
+OutStr macro str ;������ ������ ������
 push dx
 mov ah,09h
 lea dx,str
@@ -6,7 +6,7 @@ int 21h
 pop dx
 endm 
 ;----------------------------------------
-OutChar macro char ;ìàêðîñ âûâîäà ñèìâîëà
+OutChar macro char ;������ ������ �������
 push ax
 push dx
 mov ah,06h
@@ -17,7 +17,7 @@ pop dx
 pop ax
 endm
 ;-------------------------------------
-Delay macro time ;ìàêðîñ çàäåæêè â ìêñ
+Delay macro time ;������ ������� � ���
 local ext,iter
 push cx
 mov cx,time
@@ -31,35 +31,35 @@ loop ext
 pop cx
 endm
 ;-----------------------------------------------------------
-GotoXY macro x,y ;ìàêðîñ óñòàíîâêè ïîçèöèè êóðñîðà â ò.(x,y)
+GotoXY macro x,y ;������ ��������� ������� ������� � �.(x,y)
 push ax
 push bx
 push dx
-mov ah,02 ;Çàïðîñ íà óñòàíîâêó êóðñîðà
-mov bh,0 ;Ýêðàí 0
-mov dh,x ;Ñòðîêà 0
-mov dl,y ;Ñòîëáåö 0
-int 10h ;Ïåðåäà÷à óïðàâëåíèÿ â BIOS
+mov ah,02 ;������ �� ��������� �������
+mov bh,0 ;����� 0
+mov dh,x ;������ 0
+mov dl,y ;������� 0
+int 10h ;�������� ���������� � BIOS
 pop dx
 pop bx
 pop ax
 endm
 ;--------------------------------
-ClS macro ; ìàêðîñ î÷èñòêè ýêðàíà
+ClS macro ; ������ ������� ������
 push ax
-MOV AH, 0 ; íîìåð ôóíêö³¿ óñòàíîâêè ðåæèìó äèñïëåÿ
-MOV AL, 2 ; êîä ðåæèìó 80 * 25 ÷îðíî-á³ëîãî
-INT 10H ; î÷èùåííÿ åêðàíà
+MOV AH, 0 ; ����� ������� ��������� ������ �������
+MOV AL, 2 ; ��� ������ 80 * 25 �����-�����
+INT 10H ; �������� ������
 pop ax
 endm
 ;------------------------------------------------------------------
-ColorScreen macro color ; ìàêðîñ óñòàíîâêè öâåòà èçîáðàæåíèÿ è ôîíà
+ColorScreen macro color ; ������ ��������� ����� ����������� � ����
 push ax
 push bx
 push cx
 push dx
 MOV AX, 0600H
-MOV BH, color ;êîë³ð òëà òà çîáðàæåííÿ
+MOV BH, color ;���� ��� �� ����������
 MOV CX, 0000h
 MOV DX, 184FH
 INT 10H
@@ -69,94 +69,94 @@ pop cx
 pop dx
 endm
 ;----------------------------------------------------
-GetTime macro ; ìàêðîñ ïå÷àòè òåêóùåãî âðåìåíè â ôàéë
+GetTime macro ; ������ ������ �������� ������� � ����
 push ax
 push bx
 push cx
 push dx
 xor ax,ax
-mov ah,2h ;ïîëó÷åíèå âðåìåíè
+mov ah,2h ;��������� �������
 int 1Ah
-;ðàçëîæåíèå äâóçíà÷íîãî ÷èñëà (16-íîãî) íà öèôðû
+;���������� ����������� ����� (16-����) �� �����
 push bx
-mov bh, ch ;èñïîëüçóåòñÿ bx
-mov bl, ch ;ch - ÷àñû
+mov bh, ch ;������������ bx
+mov bl, ch ;ch - ����
 and bh, 11110000b
 shr bh, 4h
 and bl, 00001111b
 add bh,30h
 mov DATA_BUFFER, bh
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,1          ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,DATA_BUFFER;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,1          ;����� ������������ ������
+LEA  DX,DATA_BUFFER;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 xor ax,ax
-mov ah,2h ;ïîëó÷åíèå âðåìåíè
+mov ah,2h ;��������� �������
 int 1Ah
-;ðàçëîæåíèå äâóçíà÷íîãî ÷èñëà (16-íîãî) íà öèôðû
+;���������� ����������� ����� (16-����) �� �����
 push bx
-mov bh, ch ;èñïîëüçóåòñÿ bx
-mov bl, ch ;ch - ÷àñû
+mov bh, ch ;������������ bx
+mov bl, ch ;ch - ����
 and bh, 11110000b
 shr bh, 4h
 and bl, 00001111b
 add bl,30h
 mov DATA_BUFFER, bl
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,1          ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,DATA_BUFFER;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,1          ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,separator  ;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,1          ;����� ������������ ������
+LEA  DX,DATA_BUFFER;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,1          ;����� ������������ ������
+LEA  DX,separator  ;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 xor ax,ax
-mov ah,2h ;ïîëó÷åíèå âðåìåíè
+mov ah,2h ;��������� �������
 int 1Ah
-;ðàçëîæåíèå äâóçíà÷íîãî ÷èñëà (16-íîãî) íà öèôðû
-mov bh, cl ;èñïîëüçóåòñÿ bx
-mov bl, cl ;cl - ìèíóòû (åñëè dh - ñåêóíäû)
+;���������� ����������� ����� (16-����) �� �����
+mov bh, cl ;������������ bx
+mov bl, cl ;cl - ������ (���� dh - �������)
 and bh, 11110000b
 shr bh, 4h
 and bl, 00001111b
 add bh,30h
 mov DATA_BUFFER, bh
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,1          ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,DATA_BUFFER;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,1          ;����� ������������ ������
+LEA  DX,DATA_BUFFER;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 xor ax,ax
-mov ah,2h ;ïîëó÷åíèå âðåìåíè
+mov ah,2h ;��������� �������
 int 1Ah
-;ðàçëîæåíèå äâóçíà÷íîãî ÷èñëà (16-íîãî) íà öèôðû
-mov bh, cl ;èñïîëüçóåòñÿ bx
-mov bl, cl ;cl - ìèíóòû (åñëè dh - ñåêóíäû)
+;���������� ����������� ����� (16-����) �� �����
+mov bh, cl ;������������ bx
+mov bl, cl ;cl - ������ (���� dh - �������)
 and bh, 11110000b
 shr bh, 4h
 and bl, 00001111b
 add bl,30h
 mov DATA_BUFFER, bl
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,1          ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,DATA_BUFFER;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,2          ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,newline    ;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,1          ;����� ������������ ������
+LEA  DX,DATA_BUFFER;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,2          ;����� ������������ ������
+LEA  DX,newline    ;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 pop ax
 pop bx
 pop cx
 pop dx
 endm
-;-----------------------ÇÍÀÊÎÃÅÍÅÐÀÒÎÐ----------------------
-draw0 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 0 äëÿ ÷àñîâ (14õ9)
+;-----------------------��������������----------------------
+draw0 macro ; ������ ������ ������������� 0 ��� ����� (14�9)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -288,7 +288,7 @@ add coll, 10
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw1 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 1 äëÿ ÷àñîâ (14õ9)
+draw1 macro ; ������ ������ ������������� 1 ��� ����� (14�9)
 add coll, 5
 GotoXY line,coll
 OutChar symbol
@@ -358,7 +358,7 @@ add coll, 8
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw2 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 2 äëÿ ÷àñîâ (14õ9)
+draw2 macro ; ������ ������ ������������� 2 ��� ����� (14�9)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -448,7 +448,7 @@ add coll, 11
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw3 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 3 äëÿ ÷àñîâ (14õ9)
+draw3 macro ; ������ ������ ������������� 3 ��� ����� (14�9)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -540,7 +540,7 @@ add coll, 10
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw4 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 4 äëÿ ÷àñîâ (14õ9)
+draw4 macro ; ������ ������ ������������� 4 ��� ����� (14�9)
 add coll, 7
 GotoXY line,coll
 OutChar symbol
@@ -640,7 +640,7 @@ add coll, 4
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw5 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 5 äëÿ ÷àñîâ (14õ9)
+draw5 macro ; ������ ������ ������������� 5 ��� ����� (14�9)
 GotoXY line,coll
 OutChar symbol
 OutChar symbol
@@ -733,7 +733,7 @@ add coll, 11
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw6 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 6 äëÿ ÷àñîâ (14õ9)
+draw6 macro ; ������ ������ ������������� 6 ��� ����� (14�9)
 GotoXY line,coll
 OutChar symbol
 OutChar symbol
@@ -844,7 +844,7 @@ add coll, 11
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw7 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 7 äëÿ ÷àñîâ (14õ9)
+draw7 macro ; ������ ������ ������������� 7 ��� ����� (14�9)
 GotoXY line,coll
 OutChar symbol
 OutChar symbol
@@ -919,7 +919,7 @@ add coll, 11
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw8 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 8 äëÿ ÷àñîâ (14õ9)
+draw8 macro ; ������ ������ ������������� 8 ��� ����� (14�9)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -1060,7 +1060,7 @@ add coll, 10
 sub line, 13
 endm
 ;-----------------------------------------------------------
-draw9 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 9 äëÿ ÷àñîâ (14õ9)
+draw9 macro ; ������ ������ ������������� 9 ��� ����� (14�9)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -1180,29 +1180,29 @@ add coll, 10
 sub line, 13
 endm
 ;--------------------------------------------------------------------
-draw_separator macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè : äëÿ ÷àñîâ (14õ9)
+draw_separator macro ; ������ ������ ������������� : ��� ����� (14�9)
 add line, 4
 GotoXY line,coll
-OutChar '¯'
+OutChar '�'
 add line, 5
 GotoXY line,coll
-OutChar '¯'
+OutChar '�'
 sub line, 9
 add coll, 3
 endm
 ;-----------------------------------------------------------------------------
-drawAlarm_separator macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè : äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_separator macro ; ������ ������ ������������� : ��� ���������� (7�7)
 add line, 2
 GotoXY line,coll
-OutChar '¯'
+OutChar '�'
 add line, 2
 GotoXY line,coll
-OutChar '¯'
+OutChar '�'
 sub line, 4
 add coll, 2
 endm
 ;---------------------------------------------------------------------
-drawAlarm_0 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 0 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_0 macro ; ������ ������ ������������� 0 ��� ���������� (7�7)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -1267,7 +1267,7 @@ sub line, 6
 add coll, 7
 endm
 ;---------------------------------------------------------------------
-drawAlarm_1 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 1 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_1 macro ; ������ ������ ������������� 1 ��� ���������� (7�7)
 add coll, 3
 GotoXY line,coll
 OutChar symbol
@@ -1309,7 +1309,7 @@ sub line, 6
 add coll, 7
 endm
 ;---------------------------------------------------------------------
-drawAlarm_2 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 2 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_2 macro ; ������ ������ ������������� 2 ��� ���������� (7�7)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -1360,7 +1360,7 @@ sub line, 6
 add coll, 8
 endm
 ;---------------------------------------------------------------------
-drawAlarm_3 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 3 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_3 macro ; ������ ������ ������������� 3 ��� ���������� (7�7)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -1412,7 +1412,7 @@ sub line, 6
 add coll, 7
 endm
 ;---------------------------------------------------------------------
-drawAlarm_4 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 4 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_4 macro ; ������ ������ ������������� 4 ��� ���������� (7�7)
 GotoXY line,coll
 OutChar symbol
 OutChar symbol
@@ -1465,7 +1465,7 @@ sub line, 6
 add coll, 3
 endm
 ;---------------------------------------------------------------------
-drawAlarm_5 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 5 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_5 macro ; ������ ������ ������������� 5 ��� ���������� (7�7)
 GotoXY line,coll
 OutChar symbol
 OutChar symbol
@@ -1516,7 +1516,7 @@ sub line, 6
 add coll, 7
 endm
 ;---------------------------------------------------------------------
-drawAlarm_6 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 6 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_6 macro ; ������ ������ ������������� 6 ��� ���������� (7�7)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -1571,7 +1571,7 @@ sub line, 6
 add coll, 7
 endm
 ;---------------------------------------------------------------------
-drawAlarm_7 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 7 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_7 macro ; ������ ������ ������������� 7 ��� ���������� (7�7)
 GotoXY line,coll
 OutChar symbol
 OutChar symbol
@@ -1614,7 +1614,7 @@ sub line, 6
 add coll, 8
 endm
 ;---------------------------------------------------------------------
-drawAlarm_8 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 8 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_8 macro ; ������ ������ ������������� 8 ��� ���������� (7�7)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -1678,7 +1678,7 @@ sub line, 6
 add coll, 7
 endm
 ;---------------------------------------------------------------------
-drawAlarm_9 macro ; ìàêðîñ ïå÷àòè ïñåâäîãðàôèêè 9 äëÿ áóäèëüíèêà (7õ7)
+drawAlarm_9 macro ; ������ ������ ������������� 9 ��� ���������� (7�7)
 add coll, 1
 GotoXY line,coll
 OutChar symbol
@@ -1746,7 +1746,7 @@ endm
 .data
 blink db 1b
 symbol db 10000010b
-color db 0Ah ;çåëåíûé íà ÷åðíîì ôîíå
+color db 0Ah ;������� �� ������ ����
 line db 11d
 coll db 15d
 INSTRUCNION DB 'You can select to [s]et the alarm or press Z for exit.$'
@@ -1779,48 +1779,48 @@ firstring db 1b
 HANDLE dw 0
 PATH DB 'journal.txt',0
 DATA_BUFFER DB 100 DUP(?)
-wrStr db 35 dup('_'),13,10 ; ñòðîêà äëÿ çàïèñè çàáèòàÿ '_'
+wrStr db 35 dup('_'),13,10 ; ������ ��� ������ ������� '_'
  
  
 .code
 .386
 start:
-mov ax,@DATA ;èíèöèàëèçàöèÿ
+mov ax,@DATA ;�������������
 mov ds,ax
  
  
-;---îòêðûâàåì ôàéë
+;---��������� ����
 OPEN:
-LEA  DX,PATH       ;DS:DX óêàçûâàþò íà ïóòü
-MOV  AL,1          ;êîä îòêðûòèÿ äëÿ çàïèñè
-MOV  AH,3DH        ;íîìåð ôóíêöèè
-INT  21H           ;îòêðûâàåì ôàéë
-JC   OPEN_ERROR    ;óõîä ïî îøèáêå
-MOV  HANDLE,AX     ;ñîõðàíÿåì íîìåð ôàéëà
+LEA  DX,PATH       ;DS:DX ��������� �� ����
+MOV  AL,1          ;��� �������� ��� ������
+MOV  AH,3DH        ;����� �������
+INT  21H           ;��������� ����
+JC   OPEN_ERROR    ;���� �� ������
+MOV  HANDLE,AX     ;��������� ����� �����
 
-;---óñòàíîâêà ôàéëîâîãî óêàçàòåëÿ íà êîíåö ôàéëà
+;---��������� ��������� ��������� �� ����� �����
 POINTER:
-MOV  BX,AX         ;íîìåð ôàéëà â BX
-MOV  CX,0          ;CX:DX äàþò ñìåùåíèå îòíîñèòåëüíî êîíöà
+MOV  BX,AX         ;����� ����� � BX
+MOV  CX,0          ;CX:DX ���� �������� ������������ �����
 MOV  DX,0          ;
-MOV  AL,2          ;êîä äëÿ êîíöà ôàéëà
-MOV  AH,42H        ;ôóíêöèÿ óñòàíîâêè óêàçàòåëÿ
-INT  21H           ;óñòàíàâëèâàåì óêàçàòåëü
-JC   POINTER_ERROR ;ïðîâåðêà íà îøèáêó
+MOV  AL,2          ;��� ��� ����� �����
+MOV  AH,42H        ;������� ��������� ���������
+INT  21H           ;������������� ���������
+JC   POINTER_ERROR ;�������� �� ������
 
-;---çàïèñü â ôàéë
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,37         ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,wrStr      ;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+;---������ � ����
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,37         ;����� ������������ ������
+LEA  DX,wrStr      ;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 
-;---çàïèñü â ôàéë
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,30         ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,str_start  ;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+;---������ � ����
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,30         ;����� ������������ ������
+LEA  DX,str_start  ;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 GetTime
 jmp l1
  
@@ -1833,24 +1833,24 @@ jmp POINTER
  
 l1:
 ClS
-ColorScreen color ;çåëåíûé íà ÷åðíîì ôîíå
+ColorScreen color ;������� �� ������ ����
 GotoXY 0,12
 OutStr INSTRUCNION
 
 GotoXY line,coll
 xor ax,ax
-mov ah,2h ;ïîëó÷åíèå âðåìåíè
+mov ah,2h ;��������� �������
 int 1Ah
 
-;ðàçëîæåíèå äâóçíà÷íîãî ÷èñëà (16-íîãî) íà öèôðû
+;���������� ����������� ����� (16-����) �� �����
 push bx
-mov bh, ch ;èñïîëüçóåòñÿ bx
-mov bl, ch ;ch - ÷àñû
+mov bh, ch ;������������ bx
+mov bl, ch ;ch - ����
 and bh, 11110000b
 shr bh, 4h
 and bl, 00001111b
 
-;ðàñïîçíàâàíèå ïåðâîé öèôðû è âûâîä íà ýêðàí ïñåâäîãðàôèêè
+;������������� ������ ����� � ����� �� ����� �������������
 cmp bh, 0d
 jne next_h0
 add coll, 11
@@ -1875,7 +1875,7 @@ cmp alarm_h_10,2
 jne e
 mov equal1, 1
 
-;ðàñïîçíàâàíèå âòîðîé öèôðû è âûâîä íà ýêðàí ïñåâäîãðàôèêè
+;������������� ������ ����� � ����� �� ����� �������������
 e:
 cmp bl, 0d
 jne next_h00
@@ -1966,7 +1966,7 @@ mov equal2, 1
 e1:
 pop bx
 
-;ìèãàíèå ðàçäåëèòåëÿ
+;������� �����������
 cmp blink, 1b
 jne no_blink
 draw_separator
@@ -1977,16 +1977,16 @@ add coll, 3
 mov blink, 1b
 jmp min
 
-;ðàçëîæåíèå äâóçíà÷íîãî ÷èñëà (16-íîãî) íà öèôðû
+;���������� ����������� ����� (16-����) �� �����
 min:
 push bx
-mov bh, cl ;èñïîëüçóåòñÿ bx
-mov bl, cl ;cl - ìèíóòû (åñëè dh - ñåêóíäû)
+mov bh, cl ;������������ bx
+mov bl, cl ;cl - ������ (���� dh - �������)
 and bh, 11110000b
 shr bh, 4h
 and bl, 00001111b
 
-;ðàñïîçíàâàíèå ïåðâîé öèôðû è âûâîä íà ýêðàí ïñåâäîãðàôèêè
+;������������� ������ ����� � ����� �� ����� �������������
 cmp bh, 0d
 jne next_m0
 draw0
@@ -2038,7 +2038,7 @@ cmp alarm_m_10,5
 jne e2
 mov equal3, 1
 
-;ðàñïîçíàâàíèå âòîðîé öèôðû è âûâîä íà ýêðàí ïñåâäîãðàôèêè
+;������������� ������ ����� � ����� �� ����� �������������
 e2:
 cmp bl, 0d
 jne next_m00
@@ -2130,7 +2130,7 @@ e3:
 pop bx
 
 
-;ïå÷àòàåì áóäèëüíèê ìàëåíüêèìè öèôðàìè
+;�������� ��������� ���������� �������
 mov line, 2d
 mov coll, 21d
 
@@ -2279,8 +2279,8 @@ mov coll, 15d
 GotoXY 1, 75
  
  
-mov ah,01h ;ïðîâåðêà áóôåðà êëàâèàòóðû
-int 16h ;ôëàã íóëÿ zf=0 åñëè áûëà íàæàòà êëàâèøà
+mov ah,01h ;�������� ������ ����������
+int 16h ;���� ���� zf=0 ���� ���� ������ �������
 jnz settings
  
  
@@ -2296,42 +2296,42 @@ jne norm
  
 cmp firstring,1
 jne AlarmRing
-;---çàïèñü â ôàéë
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,30         ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,str_alarmring  ;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+;---������ � ����
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,30         ;����� ������������ ������
+LEA  DX,str_alarmring  ;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 GetTime
 mov firstring,0
  
 AlarmRing:
-mov color, 0Ch ; êðàñíûé íà ÷åðíîì ôîíå
+mov color, 0Ch ; ������� �� ������ ����
  
-; ãåíåðàòîð çâóêà
-mov al, 10110110b              ; êàíàë 2, ðåæèì 3
+; ��������� �����
+mov al, 10110110b              ; ����� 2, ����� 3
 out 43h, al
-mov al, 2ah         ; ñîõðàíÿåì ìëàäøèé áàéò ÷àñòîòû
+mov al, 2ah         ; ��������� ������� ���� �������
 out 42h, al
-mov al, 4h          ; ñîõðàíÿåì ñòàðøèé áàéò ÷àñòîòû
+mov al, 4h          ; ��������� ������� ���� �������
 out  42h, al        
-in al, 61h          ; òåêóùåå ñîñòîÿíèå ïîðòà 61h â AL
-or  al, 00000011b              ; óñòàíîâëåíèÿ áèòîâ äëÿ ðàçðåøåíèÿ ðàáîòû äèíàìèêà è âêëþ÷åíèå åãî
-out 61h, al         ; âêëþ÷àåì äèíàìèê
+in al, 61h          ; ������� ��������� ����� 61h � AL
+or  al, 00000011b              ; ������������ ����� ��� ���������� ������ �������� � ��������� ���
+out 61h, al         ; �������� �������
                 
-mov bx,2            ; äëèòåëüíîñòü ïèêà
+mov bx,2            ; ������������ ����
 xor ah, ah
-int 1ah             ; ïîëó÷åíèå òåêóùåãî âðåìåíè
-add  dx, bx         ; äîáîâëÿåì ê íåìó äëèíó ïèêà
-mov bx, dx          ; è ñîõðàíèåì
+int 1ah             ; ��������� �������� �������
+add  dx, bx         ; ��������� � ���� ����� ����
+mov bx, dx          ; � ���������
 _m1:
-int 1ah             ; ñíîâà ïîëó÷àåì âðåìÿ
-cmp dx, bx          ; è ñðàâíèâàåì ïðîøëî ëè íóæíîå âðåìÿ, åñëè íåò, öèêëèìñÿ ñíîâà
+int 1ah             ; ����� �������� �����
+cmp dx, bx          ; � ���������� ������ �� ������ �����, ���� ���, �������� �����
 jb _m1
                 
 in al, 61h
-and al, 11111100b              ; îáíóëÿåì áèòû
-out 61h, al         ; âûêëþ÷àåì äèíàìèê
+and al, 11111100b              ; �������� ����
+out 61h, al         ; ��������� �������
  
 mov equal1, 0
 mov equal2, 0
@@ -2346,7 +2346,7 @@ mov equal1, 0
 mov equal2, 0
 mov equal3, 0
 mov equal4, 0
-mov color, 0Ah ; çåëåíûé íà ÷åðíîì ôîíå
+mov color, 0Ah ; ������� �� ������ ����
 mov firstring,1
 Delay 500
 jmp l1
@@ -2354,15 +2354,15 @@ jmp l1
  
 settings:
 GotoXY 1, 75
-MOV AH, 1 ; íîìåð ôóíêö³¿ DOS óâåäåííÿ ç ëóíîþ â³äîáðàæåííÿ íà òåðì³íàë³
-INT 21H ; îòðèìàííÿ ñèìâîëó
-MOV PRESS_KEY_VALUE, AL ; çáåðåæåííÿ(çàïàì'ÿòîâóâàííÿ) ñèìâîëó
+MOV AH, 1 ; ����� ������� DOS �������� � ����� ����������� �� �������
+INT 21H ; ��������� �������
+MOV PRESS_KEY_VALUE, AL ; ����������(�����'����������) �������
 ClS
-ColorScreen 03h ;cyan íà ÷åðíîì ôîíå
+ColorScreen 03h ;cyan �� ������ ����
 CMP PRESS_KEY_VALUE, 5Ah ;Z
-JE BYE ; ïåðåõ³ä äî çàê³í÷åííÿ ðîáîòè
+JE BYE ; ������� �� ��������� ������
 CMP PRESS_KEY_VALUE, 73h ;s
-JE SET ; âèêëèê ïåðåõîäó äî ï³äïðîãðàìè âñòàíîâëåííÿ áóäèëüíèêà
+JE SET ; ������ �������� �� ���������� ������������ ����������
 GotoXY 10,30
 OutStr error_string
 jmp settings
@@ -2372,16 +2372,16 @@ GotoXY 10,30
 OutStr erase_string
 GotoXY 10,30
 OutStr BYE_STRING
-OutChar 'Ò'
+OutChar '�'
 jmp exit
 
 set:
-;---çàïèñü â ôàéë
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,30         ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,str_preskey  ;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+;---������ � ����
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,30         ;����� ������������ ������
+LEA  DX,str_preskey  ;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 GetTime
 set_:
 GotoXY 0,22
@@ -2389,9 +2389,9 @@ OutStr header
 GotoXY 1,10
 OutStr INSTRUCNION2
 GotoXY 1, 75
-MOV AH, 1 ; íîìåð ôóíêö³¿ DOS óâåäåííÿ ç ëóíîþ â³äîáðàæåííÿ íà òåðì³íàë³
-INT 21H ; îòðèìàííÿ ñèìâîëó äåñÿòê³â ãîäèí
-MOV PRESS_KEY_VALUE, AL ; çáåðåæåííÿ(çàïàì'ÿòîâóâàííÿ) ñèìâîëó
+MOV AH, 1 ; ����� ������� DOS �������� � ����� ����������� �� �������
+INT 21H ; ��������� ������� ������� �����
+MOV PRESS_KEY_VALUE, AL ; ����������(�����'����������) �������
 CMP PRESS_KEY_VALUE, 30h ;0
 JNE next_num1
 mov alarm_h_10, 0
@@ -2418,9 +2418,9 @@ OutStr error_string
 jmp set_
 next_char:
 GotoXY 1, 76
-MOV AH, 1 ; íîìåð ôóíêö³¿ DOS óâåäåííÿ ç ëóíîþ â³äîáðàæåííÿ íà òåðì³íàë³
-INT 21H ; îòðèìàííÿ ñèìâîëó îäèíèöü ãîäèí
-MOV PRESS_KEY_VALUE, AL ; çáåðåæåííÿ(çàïàì'ÿòîâóâàííÿ) ñèìâîëó
+MOV AH, 1 ; ����� ������� DOS �������� � ����� ����������� �� �������
+INT 21H ; ��������� ������� ������� �����
+MOV PRESS_KEY_VALUE, AL ; ����������(�����'����������) �������
 cmp alarm_h_10, 2
 jne ifH01
 CMP PRESS_KEY_VALUE, 30h ;0
@@ -2533,9 +2533,9 @@ jmp next_char
 next_min:
 GotoXY 1, 77
 OutStr separator
-MOV AH, 1 ; íîìåð ôóíêö³¿ DOS óâåäåííÿ ç ëóíîþ â³äîáðàæåííÿ íà òåðì³íàë³
-INT 21H ; îòðèìàííÿ ñèìâîëó äåñÿòê³â õâèëèí
-MOV PRESS_KEY_VALUE, AL ; çáåðåæåííÿ(çàïàì'ÿòîâóâàííÿ) ñèìâîëó
+MOV AH, 1 ; ����� ������� DOS �������� � ����� ����������� �� �������
+INT 21H ; ��������� ������� ������� ������
+MOV PRESS_KEY_VALUE, AL ; ����������(�����'����������) �������
 CMP PRESS_KEY_VALUE, 30h ;0
 JNE next_minnum1
 mov alarm_m_10, 0
@@ -2583,9 +2583,9 @@ OutStr error_string
 jmp next_min
 next_minchar:
 GotoXY 1, 79
-MOV AH, 1 ; íîìåð ôóíêö³¿ DOS óâåäåííÿ ç ëóíîþ â³äîáðàæåííÿ íà òåðì³íàë³
-INT 21H ; îòðèìàííÿ ñèìâîëó îäèíèöü õâèëèí
-MOV PRESS_KEY_VALUE, AL ; çáåðåæåííÿ(çàïàì'ÿòîâóâàííÿ) ñèìâîëó
+MOV AH, 1 ; ����� ������� DOS �������� � ����� ����������� �� �������
+INT 21H ; ��������� ������� ������� ������
+MOV PRESS_KEY_VALUE, AL ; ����������(�����'����������) �������
 CMP PRESS_KEY_VALUE, 30h ;0
 JNE next_minnum01
 mov alarm_m_01, 0
@@ -2661,12 +2661,12 @@ OutStr error_string
 jmp next_minchar
 
 AlarmSetted:
-;---çàïèñü â ôàéë
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,30         ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,str_setalarm  ;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+;---������ � ����
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,30         ;����� ������������ ������
+LEA  DX,str_setalarm  ;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 GetTime
 mov firstring,1
 jmp l1
@@ -2675,19 +2675,19 @@ CLOSE_ERROR:
 JMP CLOSE
 
 exit:
-;---çàïèñü â ôàéë
-MOV  AH,40H        ;íîìåð ôóíêöèè çàïèñè â ôàéë
-MOV  BX,HANDLE     ;íîìåð ôàéëà â BX
-MOV  CX,30         ;÷èñëî çàïèñûâàåìûõ áàéòîâ
-LEA  DX,str_end    ;DS:DX óêàçûâàþò íà áóôåð äàííûõ
-INT  21H           ;äîáàâëÿåì äàííûå
+;---������ � ����
+MOV  AH,40H        ;����� ������� ������ � ����
+MOV  BX,HANDLE     ;����� ����� � BX
+MOV  CX,30         ;����� ������������ ������
+LEA  DX,str_end    ;DS:DX ��������� �� ����� ������
+INT  21H           ;��������� ������
 GetTime
-;---çàêðûòèå ôàéëà
+;---�������� �����
 CLOSE:
-MOV  AH,3EH       ;íîìåð ôóíêöèè
-MOV  BX,HANDLE    ;íîìåð ôàéëà
-INT  21H          ;çàêðûâàåì ôàéë
-JC   CLOSE_ERROR  ;óõîä íà îáðàáîòêó îøèáêè
+MOV  AH,3EH       ;����� �������
+MOV  BX,HANDLE    ;����� �����
+INT  21H          ;��������� ����
+JC   CLOSE_ERROR  ;���� �� ��������� ������
 
 mov ax,4C00h
 int 21h
